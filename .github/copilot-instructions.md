@@ -1,6 +1,6 @@
 # ADK Java Coder — Copilot Instructions
 
-This repository is a **Python ADK (Agent Development Kit) project** that autonomously develops Java programs from a natural-language task. It uses Google Gemini via the Google AI Studio API.
+This repository is a **Python ADK (Agent Development Kit) project** that autonomously develops Java programs from a natural-language task. It uses OpenAI models via the OpenAI API (routed through LiteLLM).
 
 ## Build & Run
 
@@ -8,7 +8,7 @@ This repository is a **Python ADK (Agent Development Kit) project** that autonom
 # Install dependencies
 pip install -r requirements.txt
 
-# Set up environment (copy and fill in GOOGLE_API_KEY)
+# Set up environment (copy and fill in OPENAI_API_KEY)
 cp .env.example .env
 
 # Run the agent pipeline
@@ -30,7 +30,7 @@ SequentialAgent (java_coder)             ← pipeline.py
 ```
 
 - **Loop exit:** `test_runner` outputs `ALL_TESTS_PASSED` when all JUnit5 tests pass; the LoopAgent also stops at 20 iterations.
-- **LLM backend:** `gemini-2.0-flash` via `GOOGLE_API_KEY` (Google AI Studio). Set `GOOGLE_GENAI_USE_VERTEXAI=TRUE` in `.env` to switch to Vertex AI.
+- **LLM backend:** `gpt-5-mini` via `OPENAI_API_KEY`. ADK routes OpenAI calls through LiteLLM (`openai/gpt-5-mini` model string).
 - **Java toolchain:** plain `javac` / `java` — no Maven or Gradle. JUnit5 standalone jar is downloaded to `workspace/lib/` on first run.
 
 ## Key Conventions

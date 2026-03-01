@@ -27,7 +27,7 @@ Be precise — copy the exact compiler errors and test failure messages into you
 
 test_runner_agent = LlmAgent(
     name="test_runner",
-    model="gemini-2.0-flash",
+    model="openai/gpt-5-mini",
     description=(
         "Compiles all Java sources and runs JUnit5 tests. "
         "Responds ALL_TESTS_PASSED to signal the loop to exit, or TESTS_FAILED with details."

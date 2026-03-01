@@ -27,7 +27,7 @@ If the failure was TESTS_FAILED, focus on logic errors in the implementation.
 
 code_improver_agent = LlmAgent(
     name="code_improver",
-    model="gemini-2.0-flash",
+    model="openai/gpt-5-mini",
     description="Reads compiler/test failure output and rewrites the Java implementation to fix it.",
     instruction=SYSTEM_PROMPT,
     tools=[

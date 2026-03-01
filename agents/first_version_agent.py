@@ -20,7 +20,7 @@ Rules:
 
 first_version_agent = LlmAgent(
     name="first_version",
-    model="gemini-2.0-flash",
+    model="openai/gpt-5-mini",
     description="Generates the initial Java implementation for the user's coding task.",
     instruction=SYSTEM_PROMPT,
     tools=[

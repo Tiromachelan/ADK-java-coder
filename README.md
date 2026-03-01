@@ -26,10 +26,10 @@ source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 cp .env.example .env
-# Edit .env and set your GOOGLE_API_KEY
+# Edit .env and set your OPENAI_API_KEY
 ```
 
-Get a free API key at https://aistudio.google.com/apikey
+Get an API key at https://platform.openai.com/api-keys
 
 ## Usage
 

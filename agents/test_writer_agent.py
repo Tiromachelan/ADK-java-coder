@@ -28,7 +28,7 @@ Rules:
 
 test_writer_agent = LlmAgent(
     name="test_writer",
-    model="gemini-2.0-flash",
+    model="openai/gpt-5-mini",
     description="Writes JUnit5 unit tests for the current Java implementation.",
     instruction=SYSTEM_PROMPT,
     tools=[
