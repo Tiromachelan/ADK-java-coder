@@ -1,0 +1,16 @@
+# Environment
+.env
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Runtime workspace (generated Java files, compiled classes, JUnit jar)
+workspace/
+
+# IDE
+.idea/
+.vscode/
+*.iml
