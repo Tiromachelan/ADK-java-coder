@@ -3,15 +3,16 @@ Pipeline assembly for the ADK Java Coder.
 
 Structure:
     SequentialAgent (root)
-    ├── LlmAgent: first_version      — generates initial Java implementation
+    ├── LlmAgent: first_version          — generates initial Java implementation
     └── LoopAgent (max 20 cycles)
         └── SequentialAgent (inner)
-            ├── LlmAgent: test_writer    — writes JUnit5 tests
-            ├── LlmAgent: test_runner    — compiles & runs tests; responds ALL_TESTS_PASSED on success
-            └── LlmAgent: code_improver  — fixes implementation on failures
+            ├── LlmAgent: test_writer        — writes JUnit5 tests (skips if already up to date)
+            ├── LlmAgent: test_runner        — compiles & runs tests; responds ALL_TESTS_PASSED on success
+            ├── EscalationCheckerAgent       — exits the loop when test_runner says ALL_TESTS_PASSED
+            └── LlmAgent: code_improver      — fixes implementation on failures
 
 The LoopAgent exits when:
-  - test_runner's response contains "ALL_TESTS_PASSED"  (via escalation_check)
+  - EscalationCheckerAgent emits escalate=True (all tests passed)
   - OR max_iterations (20) is reached
 """
 
@@ -21,20 +22,17 @@ from agents.first_version_agent import first_version_agent
 from agents.test_writer_agent import test_writer_agent
 from agents.test_runner_agent import test_runner_agent
 from agents.code_improver_agent import code_improver_agent
+from agents.escalation_agent import escalation_checker
 
 
-def _all_tests_passed(response: str) -> bool:
-    """Return True when test_runner signals all tests passed — triggers loop exit."""
-    return "ALL_TESTS_PASSED" in response
-
-
-# Inner sequence: write tests → run tests → improve code
+# Inner sequence: write tests → run tests → check escalation → improve code
 inner_sequence = SequentialAgent(
     name="tdd_cycle",
-    description="One TDD iteration: write tests, run them, improve the code.",
+    description="One TDD iteration: write tests, run them, escalate on pass, or improve the code.",
     sub_agents=[
         test_writer_agent,
         test_runner_agent,
+        escalation_checker,   # exits the loop early when ALL_TESTS_PASSED
         code_improver_agent,
     ],
 )
