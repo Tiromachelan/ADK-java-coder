@@ -1,3 +1,7 @@
-google-adk[litellm]>=0.1.0
+google-adk>=0.1.0
+litellm>=1.40.0
 python-dotenv>=1.0.0
 requests>=2.31.0
+# Pin cryptography to avoid Rust-compiled wheels that use CPU features
+# not available on all ARM64 environments (e.g., older Cortex-A cores)
+cryptography>=38.0.0,<44.0.0
