@@ -6,6 +6,7 @@ Structure:
     ├── LlmAgent: first_version          — generates initial Java implementation
     └── LoopAgent (max 20 cycles)
         └── SequentialAgent (inner)
+            ├── CycleTrackerAgent            — increments explanation DB cycle counter
             ├── LlmAgent: test_writer        — writes JUnit5 tests (skips if already up to date)
             ├── LlmAgent: test_runner        — compiles & runs tests; responds ALL_TESTS_PASSED on success
             ├── EscalationCheckerAgent       — exits the loop when test_runner says ALL_TESTS_PASSED
@@ -23,13 +24,15 @@ from agents.test_writer_agent import test_writer_agent
 from agents.test_runner_agent import test_runner_agent
 from agents.code_improver_agent import code_improver_agent
 from agents.escalation_agent import escalation_checker
+from agents.cycle_tracker_agent import cycle_tracker
 
 
-# Inner sequence: write tests → run tests → check escalation → improve code
+# Inner sequence: track cycle → write tests → run tests → check escalation → improve code
 inner_sequence = SequentialAgent(
     name="tdd_cycle",
-    description="One TDD iteration: write tests, run them, escalate on pass, or improve the code.",
+    description="One TDD iteration: track cycle, write tests, run them, escalate on pass, or improve the code.",
     sub_agents=[
+        cycle_tracker,
         test_writer_agent,
         test_runner_agent,
         escalation_checker,   # exits the loop early when ALL_TESTS_PASSED

@@ -4,6 +4,7 @@ from google.adk.agents import LlmAgent
 from google.adk.tools import FunctionTool
 
 from tools.shell_tools import write_file, read_file, list_files, download_junit5
+from tools.db_tools import log_explanation
 
 SYSTEM_PROMPT = """\
 You are an expert Java test engineer specializing in JUnit5.
@@ -24,6 +25,13 @@ Your job:
       - Edge cases and boundary values
       - Expected exceptions where applicable
    d. Call write_file to save each test class (e.g. CalculatorTest.java) to workspace/.
+4. After writing tests, call log_explanation once with:
+   - decision_type: 'test_design'
+   - reasoning: explain which test cases you chose and why (what behaviors you are verifying,
+     what edge cases you considered, and why the chosen structure covers the contract).
+   - context: leave empty.
+   - files_affected: comma-separated list of test files written (e.g. 'CalculatorTest.java').
+   - agent: 'test_writer'
 
 Rules:
 - Test class names must end with "Test" (e.g. CalculatorTest).
@@ -43,5 +51,6 @@ test_writer_agent = LlmAgent(
         FunctionTool(read_file),
         FunctionTool(write_file),
         FunctionTool(download_junit5),
+        FunctionTool(log_explanation),
     ],
 )

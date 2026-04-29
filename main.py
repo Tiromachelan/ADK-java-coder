@@ -22,6 +22,7 @@ from google.genai.types import Content, Part
 
 from pipeline import root_agent
 from tools.shell_tools import WORKSPACE
+from tools.db_tools import init_session
 
 
 async def run(task: str) -> None:
@@ -30,6 +31,9 @@ async def run(task: str) -> None:
         app_name="java_coder",
         user_id="user",
     )
+
+    # Register this run in the explanation database
+    init_session(session.id, task)
 
     runner = Runner(
         agent=root_agent,
@@ -62,6 +66,9 @@ async def run(task: str) -> None:
         print(f"\n--- {rel} ---")
         print(f.read_text(encoding="utf-8"))
     print(f"{'='*60}\n")
+
+    print("Explanation database updated.")
+    print("Browse explanations: python web/app.py  →  http://localhost:5000\n")
 
 
 def main() -> None:
