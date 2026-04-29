@@ -10,6 +10,9 @@ env/
 # Runtime workspace (generated Java files, compiled classes, JUnit jar)
 workspace/
 
+# Explanation database (runtime-generated)
+explanations.db
+
 # IDE
 .idea/
 .vscode/
