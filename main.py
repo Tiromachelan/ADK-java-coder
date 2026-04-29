@@ -5,7 +5,7 @@ Usage:
     python main.py "Write a Calculator class with add, subtract, multiply, divide methods"
 
 Environment:
-    GOOGLE_API_KEY — your Google AI Studio API key (set in .env or shell)
+    OPENAI_API_KEY — your OpenAI API key (set in .env or shell)
 """
 
 import asyncio
