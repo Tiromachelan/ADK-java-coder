@@ -20,6 +20,8 @@ SequentialAgent (java_coder)
 
 The loop exits early when all tests pass, or after 20 iterations.
 
+**LLM backend:** `openai/gpt-5-mini` via `OPENAI_API_KEY`. ADK routes all OpenAI calls through LiteLLM using the `openai/gpt-5-mini` model string.
+
 ### Explanation database schema
 
 ```
@@ -53,7 +55,7 @@ Get an API key at https://platform.openai.com/api-keys
 python main.py "Write a Calculator class with add, subtract, multiply, and divide methods"
 ```
 
-Generated Java files are written to `workspace/` (gitignored). The final source is printed to stdout at the end. Explanations are appended to `explanations.db` in the project root.
+Generated Java files are written to `workspace/` (gitignored). All `.java` files in the workspace are printed to stdout at the end. Explanations are appended to `explanations.db` in the project root.
 
 ### Browse explanations
 
@@ -82,7 +84,7 @@ agents/
   escalation_agent.py      ← exits the TDD loop when all tests pass
   cycle_tracker_agent.py   ← increments the DB cycle counter each TDD iteration
 tools/
-  shell_tools.py           ← write_file, read_file, compile_java, run_tests, download_junit5
+  shell_tools.py           ← write_file, read_file, list_files, compile_java, run_tests, download_junit5
   db_tools.py              ← log_explanation, write_file_explained, init_session, increment_cycle
 web/
   app.py                   ← Flask explanation browser (python web/app.py)
